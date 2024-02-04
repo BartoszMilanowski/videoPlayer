@@ -1,7 +1,6 @@
 *{
     margin: 0;
     padding: 0;
-    text-transform: capitalize;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: normal;
 }
@@ -16,6 +15,8 @@ body{
     text-align: center;
     padding: 10px;
 }
+
+/*Main video area*/
 
 .container{
     display: grid;
@@ -42,6 +43,9 @@ body{
     padding-top: 15px;
     padding-bottom: 15px;
 }
+
+
+/* Video List */
 
 .container .video-list{
     background: #fff;
