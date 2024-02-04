@@ -2,6 +2,7 @@
 <html lang="pl">
 
 <head>
+    <title>Custom Video Player</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -17,8 +18,7 @@
     <h3 class="heading">My Video Player</h3>
     <div class="container">
         <div class="main-video">
-            <div class="video">
-                <video src="videos/przykladowe.mp4"></video>
+            <div class="video-container">
                 <div class="wrapper">
                     <div class="video-timeline">
                         <div class="progress-area">
@@ -27,22 +27,33 @@
                         </div>
                     </div>
                     <ul class="video-controls">
-                        <li class="options-left">
+                        <li class="options left">
                             <button class="volume"><i class="fa-solid fa-volume-high"></i></button>
                             <input type="range">
-                            <p class="current-time">00:00</p>
-                            <p class="separator"> / </p>
-                            <p class="video-duration">00:00</p>
+                            <div class="video-timer">
+                                <p class="current-time">00:00</p>
+                                <p class="separator"> / </p>
+                                <p class="video-duration">00:00</p>
+                            </div>
                         </li>
-                        <li class="options-center">
+                        <li class="options center">
                             <button class="skip-backward"><i class="fas fa-backward"></i></button>
                             <button class="play-pause"><i class="fas fa-play"></i></button>
                             <button class="skip-forward"><i class="fas fa-forward"></i></button>
                         </li>
-                        <li class="options-right">
-                            <button class="playback-speed">
-                                <span class="material-symbols-rounded">slow_motion_video</span>
-                            </button>
+                        <li class="options right">
+                            <div class="playback-content">
+                                <button class="playback-speed">
+                                    <span class="material-symbols-rounded">slow_motion_video</span>
+                                </button>
+                                <ul class="speed-options">
+                                    <li>2x</li>
+                                    <li>1.5x</li>
+                                    <li class="active">Normal</li>
+                                    <li>0.75x</li>
+                                    <li>0.5x</li>
+                                </ul>
+                            </div>
                             <button class="pic-in-pic">
                                 <span class="material-symbols-rounded">picture_in_picture_alt</span>
                             </button>
@@ -50,8 +61,9 @@
                         </li>
                     </ul>
                 </div>
-                <h3 class="title">01. Video Title</h3>
+                <video src="videos/przykladowe.mp4"></video>
             </div>
+            <h3 class="title">01. Video Title</h3>
         </div>
 
 
