@@ -10,6 +10,12 @@ const customControls = () => {
     const progressBar = container.querySelector('.progress-bar');
     const playPauseBtn = container.querySelector('.play-pause i');
 
+    video.addEventListener('timeupdate', e => {
+        let { currentTime, duration } = e.target;
+        let percent = (currentTime /  duration) * 100;
+        progressBar.style.width = `${percent}%`;
+    })
+
 
     //Play-pause proceed
     playPauseBtn.addEventListener('click', () => playPauseVid());
