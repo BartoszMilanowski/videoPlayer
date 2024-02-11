@@ -55,9 +55,37 @@ const customControls = () => {
             video.volume = 0.0;
             volumeBtn.classList.replace('fa-volume-high', 'fa-volume-xmark');
         }
+        volumeSlider.value = video.volume;
     };
 
     volumeBtn.addEventListener('click', () => muteUnmuteVid());
+
+    //Change volume level
+    volumeSlider.addEventListener('input', e => handleVolumeSlider(e))
+
+    const handleVolumeSlider = (e) => setVolume(parseFloat(e.target.value));
+
+    const changeVolume = (delta) => {
+        let currentVolume = parseFloat(video.volume);
+        let newVolume = Math.min(Math.max(currentVolume + delta, 0), 1);
+        setVolume(newVolume);
+    }
+
+    const setVolume = (newVolume) => {
+
+        video.volume = newVolume;
+        volumeSlider.value = newVolume;
+
+        updateVolumeIcon(newVolume);
+    };
+
+    const updateVolumeIcon = (volume) => {
+        if (volume === 0) {
+            volumeBtn.classList.replace('fa-volume-high', 'fa-volume-xmark');
+        } else {
+            volumeBtn.classList.replace('fa-volume-xmark', 'fa-volume-high');
+        }
+    };
 
     //Proceed by keyboard
     document.addEventListener('keydown', (event) => {
@@ -73,6 +101,12 @@ const customControls = () => {
                 break;
             case 'KeyM':
                 muteUnmuteVid();
+                break;
+            case 'ArrowUp':
+                changeVolume(0.1);
+                break;
+            case 'ArrowDown':
+                changeVolume(-0.1);
                 break;
             default:
                 '';
