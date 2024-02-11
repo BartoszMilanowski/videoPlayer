@@ -1,7 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
+    customControls();
     selectFromList();
 })
 
+const customControls = () =>{
+
+    const container = document.querySelector('.video-container');
+    const video = container.querySelector('video');
+    const playPauseBtn = container.querySelector('.play-pause i');
+
+    playPauseBtn.addEventListener('click', () => {
+        video.paused ? video.play() : video.pause();
+    })
+    
+    video.addEventListener('click', () => {
+        video.paused ? video.play() : video.pause();
+    })
+
+    video.addEventListener('play', () => {
+        playPauseBtn.classList.replace('fa-play', 'fa-pause');
+    })
+    
+    video.addEventListener('pause', () => {
+        playPauseBtn.classList.replace('fa-pause', 'fa-play');
+    })
+
+};
 
 const selectFromList = () => {
     let listVideo = document.querySelectorAll('.video-list .vid');
