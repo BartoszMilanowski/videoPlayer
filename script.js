@@ -9,8 +9,9 @@ const customControls = () => {
     const video = container.querySelector('video');
     const progressBar = container.querySelector('.progress-bar');
     const playPauseBtn = container.querySelector('.play-pause i');
-    const skipBackward = container.querySelector('.skip-backward i');
-    const skipForward = container.querySelector('.skip-forward i');
+    const skipBackwardBtn = container.querySelector('.skip-backward i');
+    const skipForwardBtn = container.querySelector('.skip-forward i');
+    const volumeBtn = container.querySelector('.volume i');
 
     //Move progress bar
     video.addEventListener('timeupdate', e => {
@@ -18,7 +19,6 @@ const customControls = () => {
         let percent = (currentTime / duration) * 100;
         progressBar.style.width = `${percent}%`;
     })
-
 
     //Play-pause proceed
     playPauseBtn.addEventListener('click', () => playPauseVid());
@@ -40,8 +40,21 @@ const customControls = () => {
     const skipBackwardFunc = () => video.currentTime -= 5;
     const skipForwardFunc = () => video.currentTime += 5;
 
-    skipBackward.addEventListener('click', () => skipBackwardFunc());
-    skipForward.addEventListener('click', () => skipForwardFunc());
+    skipBackwardBtn.addEventListener('click', () => skipBackwardFunc());
+    skipForwardBtn.addEventListener('click', () => skipForwardFunc());
+
+    //Mute and unmute video
+    const muteUnmuteVid = () => {
+        if (!volumeBtn.classList.contains('fa-volume-high')) {
+            video.volume = 0.5
+            volumeBtn.classList.replace('fa-volume-xmark', 'fa-volume-high');
+        } else {
+            video.volume = 0.0;
+            volumeBtn.classList.replace('fa-volume-high', 'fa-volume-xmark');
+        }
+    };
+
+    volumeBtn.addEventListener('click', () => muteUnmuteVid());
 
     //Proceed by keyboard
     document.addEventListener('keydown', (event) => {
@@ -54,6 +67,9 @@ const customControls = () => {
                 break;
             case 'ArrowRight':
                 skipForwardFunc();
+                break;
+            case 'KeyM':
+                muteUnmuteVid();
                 break;
             default:
                 '';
