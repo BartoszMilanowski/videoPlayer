@@ -12,13 +12,16 @@ const customControls = () => {
     const skipBackwardBtn = container.querySelector('.skip-backward i');
     const skipForwardBtn = container.querySelector('.skip-forward i');
     const volumeBtn = container.querySelector('.volume i');
+    const volumeSlider = container.querySelector('.left input');
 
     //Move progress bar
-    video.addEventListener('timeupdate', e => {
+    video.addEventListener('timeupdate', e => setProgressBar(e));
+
+    const setProgressBar = (e) => {
         let { currentTime, duration } = e.target;
         let percent = (currentTime / duration) * 100;
         progressBar.style.width = `${percent}%`;
-    })
+    }
 
     //Play-pause proceed
     playPauseBtn.addEventListener('click', () => playPauseVid());
@@ -83,6 +86,10 @@ const selectFromList = () => {
     let listVideo = document.querySelectorAll('.video-list .vid');
     let mainVideo = document.querySelector('.main-video video');
     let title = document.querySelector('.main-video .title');
+    let progressBar = document.querySelector('.progress-bar');
+    const playPauseBtn = document.querySelector('.play-pause i');
+
+
 
     listVideo.forEach(video => {
         video.onclick = () => {
@@ -93,6 +100,9 @@ const selectFromList = () => {
                 mainVideo.src = src;
                 let text = video.children[1].innerHTML;
                 title.innerHTML = text;
+
+                progressBar.style.width = '0%';
+                playPauseBtn.classList.replace('fa-pause', 'fa-play');
             };
         }
     })
