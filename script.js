@@ -6,17 +6,37 @@ document.addEventListener('DOMContentLoaded', () => {
 const customControls = () => {
 
     const container = document.querySelector('.video-container'),
-    video = container.querySelector('video'),
-    progressBar = container.querySelector('.progress-bar'),
-    playPauseBtn = container.querySelector('.play-pause i'),
-    skipBackwardBtn = container.querySelector('.skip-backward i'),
-    skipForwardBtn = container.querySelector('.skip-forward i'),
-    volumeBtn = container.querySelector('.volume i'),
-    volumeSlider = container.querySelector('.left input'),
-    speedOptions = container.querySelector('.speed-options'),
-    speedBtn = container.querySelector('.playback-speed span'),
-    picInPicBtn = container.querySelector('.pic-in-pic span'),
-    fullscreenBtn = container.querySelector('.fullscreen i');
+        video = container.querySelector('video'),
+        progressBar = container.querySelector('.progress-bar'),
+        videoTimeline = container.querySelector('.video-timeline'),
+        currentVidTime = container.querySelector('.current-time'),
+        videoDuration = container.querySelector('.video-duration'),
+        playPauseBtn = container.querySelector('.play-pause i'),
+        skipBackwardBtn = container.querySelector('.skip-backward i'),
+        skipForwardBtn = container.querySelector('.skip-forward i'),
+        volumeBtn = container.querySelector('.volume i'),
+        volumeSlider = container.querySelector('.left input'),
+        speedOptions = container.querySelector('.speed-options'),
+        speedBtn = container.querySelector('.playback-speed span'),
+        picInPicBtn = container.querySelector('.pic-in-pic span'),
+        fullscreenBtn = container.querySelector('.fullscreen i');
+
+    //Format time
+
+    const formatTime = (time) => {
+        let seconds = Math.floor(time % 60),
+            minutes = Math.floor(time / 60) % 60,
+            hours = Math.floor(time / 3600);
+
+        seconds = seconds < 10 ? `0${seconds}` : seconds;
+        minutes = minutes < 10 ? `0${minutes}` : minutes;
+        hours = hours < 10 ? `0${hours}` : hours;
+
+        if (hours == 0) {
+            return `${minutes}:${seconds}`;
+        }
+        return `${hours}:${minutes}:${seconds}`;
+    }
 
     //Move progress bar
     video.addEventListener('timeupdate', e => setProgressBar(e));
@@ -25,7 +45,45 @@ const customControls = () => {
         let { currentTime, duration } = e.target;
         let percent = (currentTime / duration) * 100;
         progressBar.style.width = `${percent}%`;
+        currentVidTime.innerHTML = formatTime(currentTime);
     }
+
+    //Set video duration
+
+    video.addEventListener('loadeddata', e => {
+        videoDuration.innerHTML = formatTime(e.target.duration);
+    })
+
+    //Skip by timeline
+
+    videoTimeline.addEventListener('click', e => {
+        let timelineWidth = e.target.clientWidth;
+        video.currentTime = (e.offsetX / timelineWidth) * video.duration
+    })
+
+    const draggableProgressBar = e => {
+        let timelineWidth = e.target.clientWidth;
+        progressBar.style.width = `${e.offsetX}px`
+        video.currentTime = (e.offsetX / timelineWidth) * video.duration
+        currentVidTime.innerHTML = formatTime(video.currentTime);
+    }
+
+    videoTimeline.addEventListener('mousedown', () => {
+        videoTimeline.addEventListener('mousemove', draggableProgressBar);
+    })
+    
+    document.addEventListener('mouseup', () => {
+        videoTimeline.removeEventListener('mousemove', draggableProgressBar);
+    })
+
+    videoTimeline.addEventListener('mousemove', e => {
+        const progressTime = videoTimeline.querySelector('span');
+        let offsetX = e.offsetX;
+        progressTime.style.left = `${offsetX}px`;
+        let timelineWidth = e.target.clientWidth;
+        let percent = (e.offsetX / timelineWidth) *video.duration;
+        progressTime.innerText = formatTime(percent);
+    })
 
     //Play-pause proceed
     playPauseBtn.addEventListener('click', () => playPauseVid());
@@ -99,11 +157,11 @@ const customControls = () => {
     })
 
     document.addEventListener('click', e => {
-        if(e.target.tagName !== "SPAN" || e.target.className !== "material-symbols-rounded"){
+        if (e.target.tagName !== "SPAN" || e.target.className !== "material-symbols-rounded") {
             speedOptions.classList.remove('show');
         }
     })
-    
+
     speedOptions.querySelectorAll('li').forEach(option => {
         option.addEventListener('click', () => {
             video.playbackRate = option.dataset.speed;
@@ -126,7 +184,7 @@ const customControls = () => {
 
     const fullscreen = () => {
         container.classList.toggle('fullscreen');
-        if(document.fullscreenElement){
+        if (document.fullscreenElement) {
             fullscreenBtn.classList.replace('fa-compress', 'fa-expand');
             return document.exitFullscreen();
         }
