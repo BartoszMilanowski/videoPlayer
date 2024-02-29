@@ -15,7 +15,8 @@ const customControls = () => {
     volumeSlider = container.querySelector('.left input'),
     speedOptions = container.querySelector('.speed-options'),
     speedBtn = container.querySelector('.playback-speed span'),
-    picInPicBtn = container.querySelector('.pic-in-pic span');
+    picInPicBtn = container.querySelector('.pic-in-pic span'),
+    fullscreenBtn = container.querySelector('.fullscreen i');
 
     //Move progress bar
     video.addEventListener('timeupdate', e => setProgressBar(e));
@@ -119,6 +120,20 @@ const customControls = () => {
         !document.pictureInPictureElement ? video.requestPictureInPicture() : document.exitPictureInPicture()
     }
 
+    //Fullscreen
+
+    fullscreenBtn.addEventListener('click', () => fullscreen())
+
+    const fullscreen = () => {
+        container.classList.toggle('fullscreen');
+        if(document.fullscreenElement){
+            fullscreenBtn.classList.replace('fa-compress', 'fa-expand');
+            return document.exitFullscreen();
+        }
+        fullscreenBtn.classList.replace('fa-expand', 'fa-compress');
+        container.requestFullscreen();
+    }
+
     //Proceed by keyboard
     document.addEventListener('keydown', (event) => {
         switch (event.code) {
@@ -142,6 +157,9 @@ const customControls = () => {
                 break;
             case 'KeyP':
                 picInPic();
+                break;
+            case 'KeyF':
+                fullscreen();
                 break;
             default:
                 '';

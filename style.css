@@ -37,6 +37,11 @@ body{
     overflow: hidden;
 }
 
+.container .video-container.fullscreen{
+    max-width: 100%;
+    width: 100%;
+}
+
 .container .main-video .title{
     color: #333;
     font-size: 23px;
