@@ -186,6 +186,11 @@ body{
     transition: opacity 0.15s ease;
 }
 
+.playback-content .speed-options.show{
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .playback-content button:hover ~ .speed-options{
     opacity: 1;
     pointer-events: auto;

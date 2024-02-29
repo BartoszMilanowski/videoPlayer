@@ -5,14 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const customControls = () => {
 
-    const container = document.querySelector('.video-container');
-    const video = container.querySelector('video');
-    const progressBar = container.querySelector('.progress-bar');
-    const playPauseBtn = container.querySelector('.play-pause i');
-    const skipBackwardBtn = container.querySelector('.skip-backward i');
-    const skipForwardBtn = container.querySelector('.skip-forward i');
-    const volumeBtn = container.querySelector('.volume i');
-    const volumeSlider = container.querySelector('.left input');
+    const container = document.querySelector('.video-container'),
+    video = container.querySelector('video'),
+    progressBar = container.querySelector('.progress-bar'),
+    playPauseBtn = container.querySelector('.play-pause i'),
+    skipBackwardBtn = container.querySelector('.skip-backward i'),
+    skipForwardBtn = container.querySelector('.skip-forward i'),
+    volumeBtn = container.querySelector('.volume i'),
+    volumeSlider = container.querySelector('.left input'),
+    speedOptions = container.querySelector('.speed-options'),
+    speedBtn = container.querySelector('.playback-speed span');
 
     //Move progress bar
     video.addEventListener('timeupdate', e => setProgressBar(e));
@@ -60,6 +62,7 @@ const customControls = () => {
 
     volumeBtn.addEventListener('click', () => muteUnmuteVid());
 
+
     //Change volume level
     volumeSlider.addEventListener('input', e => handleVolumeSlider(e))
 
@@ -86,6 +89,26 @@ const customControls = () => {
             volumeBtn.classList.replace('fa-volume-xmark', 'fa-volume-high');
         }
     };
+
+    //Change video speed
+
+    speedBtn.addEventListener('click', () => {
+        speedOptions.classList.toggle('show');
+    })
+
+    document.addEventListener('click', e => {
+        if(e.target.tagName !== "SPAN" || e.target.className !== "material-symbols-rounded"){
+            speedOptions.classList.remove('show');
+        }
+    })
+    
+    speedOptions.querySelectorAll('li').forEach(option => {
+        option.addEventListener('click', () => {
+            video.playbackRate = option.dataset.speed;
+            speedOptions.querySelector('.active').classList.remove('active');
+            option.classList.add('active');
+        })
+    })
 
     //Proceed by keyboard
     document.addEventListener('keydown', (event) => {
