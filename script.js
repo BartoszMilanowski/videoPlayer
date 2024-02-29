@@ -14,7 +14,8 @@ const customControls = () => {
     volumeBtn = container.querySelector('.volume i'),
     volumeSlider = container.querySelector('.left input'),
     speedOptions = container.querySelector('.speed-options'),
-    speedBtn = container.querySelector('.playback-speed span');
+    speedBtn = container.querySelector('.playback-speed span'),
+    picInPicBtn = container.querySelector('.pic-in-pic span');
 
     //Move progress bar
     video.addEventListener('timeupdate', e => setProgressBar(e));
@@ -110,6 +111,14 @@ const customControls = () => {
         })
     })
 
+    //Picture in picture
+
+    picInPicBtn.addEventListener('click', () => picInPic());
+
+    const picInPic = () => {
+        !document.pictureInPictureElement ? video.requestPictureInPicture() : document.exitPictureInPicture()
+    }
+
     //Proceed by keyboard
     document.addEventListener('keydown', (event) => {
         switch (event.code) {
@@ -130,6 +139,9 @@ const customControls = () => {
                 break;
             case 'ArrowDown':
                 changeVolume(-0.1);
+                break;
+            case 'KeyP':
+                picInPic();
                 break;
             default:
                 '';
