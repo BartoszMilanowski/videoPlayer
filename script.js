@@ -20,6 +20,29 @@ const customControls = () => {
         speedBtn = container.querySelector('.playback-speed span'),
         picInPicBtn = container.querySelector('.pic-in-pic span'),
         fullscreenBtn = container.querySelector('.fullscreen i');
+    let timer;
+
+
+    //Toggle controls
+
+    const hideControls = () => {
+        if (video.paused) return;
+        timer = setTimeout(() => {
+            container.classList.remove('show-controls');
+        }, 3000);
+    }
+
+    const showControls = () => {
+        container.classList.add('show-controls');
+    }
+
+    hideControls();
+
+    container.addEventListener('mousemove', () => {
+        showControls();
+        clearTimeout(timer);
+        hideControls();
+    })
 
     //Format time
 
@@ -71,7 +94,7 @@ const customControls = () => {
     videoTimeline.addEventListener('mousedown', () => {
         videoTimeline.addEventListener('mousemove', draggableProgressBar);
     })
-    
+
     document.addEventListener('mouseup', () => {
         videoTimeline.removeEventListener('mousemove', draggableProgressBar);
     })
@@ -81,7 +104,7 @@ const customControls = () => {
         let offsetX = e.offsetX;
         progressTime.style.left = `${offsetX}px`;
         let timelineWidth = e.target.clientWidth;
-        let percent = (e.offsetX / timelineWidth) *video.duration;
+        let percent = (e.offsetX / timelineWidth) * video.duration;
         progressTime.innerText = formatTime(percent);
     })
 
@@ -91,10 +114,12 @@ const customControls = () => {
 
     video.addEventListener('play', () => {
         playPauseBtn.classList.replace('fa-play', 'fa-pause');
+        hideControls();
     });
 
     video.addEventListener('pause', () => {
         playPauseBtn.classList.replace('fa-pause', 'fa-play');
+        showControls();
     });
 
     const playPauseVid = () => {
